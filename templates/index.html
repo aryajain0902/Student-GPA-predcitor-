@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Prediction</title>
+    <!-- Bootstrap CSS (Replit dark theme) -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container py-4">
+        <header class="text-center mb-5">
+            <h1 class="display-4">Student Grade Prediction</h1>
+            <p class="lead">Enter your information to predict your final letter grade</p>
+        </header>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Student Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="/result" method="POST" id="predictionForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="sex" class="form-label">Sex</label>
+                                    <select class="form-select" id="sex" name="sex" required>
+                                        <option value="" selected disabled>Select gender</option>
+                                        <option value="0">Female</option>
+                                        <option value="1">Male</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="age" class="form-label">Age</label>
+                                    <input type="number" class="form-control" id="age" name="age" required min="10" max="25">
+                                    <div class="form-text">Enter your age (10-25)</div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="motheredu" class="form-label">Mother's Education</label>
+                                    <select class="form-select" id="motheredu" name="motheredu" required>
+                                        <option value="" selected disabled>Select education level</option>
+                                        <option value="0">None</option>
+                                        <option value="1">Primary education (4th grade)</option>
+                                        <option value="2">5th to 9th grade</option>
+                                        <option value="3">Secondary education</option>
+                                        <option value="4">Higher education</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="fatheredu" class="form-label">Father's Education</label>
+                                    <select class="form-select" id="fatheredu" name="fatheredu" required>
+                                        <option value="" selected disabled>Select education level</option>
+                                        <option value="0">None</option>
+                                        <option value="1">Primary education (4th grade)</option>
+                                        <option value="2">5th to 9th grade</option>
+                                        <option value="3">Secondary education</option>
+                                        <option value="4">Higher education</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Time Information</h4>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="travel" class="form-label">Travel Time to School</label>
+                                    <select class="form-select" id="travel" name="travel" required>
+                                        <option value="" selected disabled>Select travel time</option>
+                                        <option value="1">< 15 min</option>
+                                        <option value="2">15-30 min</option>
+                                        <option value="3">30-60 min</option>
+                                        <option value="4">60-90 min</option>
+                                        <option value="5">> 90 min</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="study" class="form-label">Weekly Study Time</label>
+                                    <select class="form-select" id="study" name="study" required>
+                                        <option value="" selected disabled>Select study hours</option>
+                                        <option value="1">< 2 hours</option>
+                                        <option value="2">2-5 hours</option>
+                                        <option value="3">5-10 hours</option>
+                                        <option value="4">10-15 hours</option>
+                                        <option value="5">> 15 hours</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="freetime" class="form-label">Free Time After School</label>
+                                    <select class="form-select" id="freetime" name="freetime" required>
+                                        <option value="" selected disabled>Select free time</option>
+                                        <option value="1">Very low</option>
+                                        <option value="2">Low</option>
+                                        <option value="3">Average</option>
+                                        <option value="4">High</option>
+                                        <option value="5">Very high</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="goout" class="form-label">Going Out with Friends</label>
+                                    <select class="form-select" id="goout" name="goout" required>
+                                        <option value="" selected disabled>Select frequency</option>
+                                        <option value="1">Very low</option>
+                                        <option value="2">Low</option>
+                                        <option value="3">Average</option>
+                                        <option value="4">High</option>
+                                        <option value="5">Very high</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Previous Grades (0-20 scale)</h4>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="g1" class="form-label">First Period Grade</label>
+                                    <input type="number" class="form-control" id="g1" name="g1" required min="0" max="20">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="g2" class="form-label">Second Period Grade</label>
+                                    <input type="number" class="form-control" id="g2" name="g2" required min="0" max="20">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="g3" class="form-label">Third Period Grade</label>
+                                    <input type="number" class="form-control" id="g3" name="g3" required min="0" max="20">
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Predict Grade</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+</body>
+</html>
