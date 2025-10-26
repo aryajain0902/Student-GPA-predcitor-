@@ -1,0 +1,71 @@
+/* Custom styles for the Student Grade Prediction app */
+
+body {
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+/* Grade circle styling */
+.grade-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 20px auto;
+    border: 8px solid;
+}
+
+/* Grade-specific colors */
+.grade-a {
+    border-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.2);
+}
+
+.grade-b {
+    border-color: #17a2b8;
+    background-color: rgba(23, 162, 184, 0.2);
+}
+
+.grade-c {
+    border-color: #ffc107;
+    background-color: rgba(255, 193, 7, 0.2);
+}
+
+.grade-d {
+    border-color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.2);
+}
+
+/* Form styling */
+.form-label {
+    font-weight: 500;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.card-header {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary {
+    padding: 10px 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .grade-circle {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .grade-circle h1 {
+        font-size: 3rem;
+    }
+}
